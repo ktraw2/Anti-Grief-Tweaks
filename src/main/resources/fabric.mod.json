@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "disable-sculk-catalyst",
   "version": "${version}",
 
   "name": "Example Mod",
@@ -14,16 +14,16 @@
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/disable-sculk-catalyst/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "io.github.ktraw2.disablesculkcatalyst.DisableSculkCatalyst"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "disable-sculk-catalyst.mixins.json"
   ],
 
   "depends": {
