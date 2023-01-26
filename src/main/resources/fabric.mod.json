@@ -3,10 +3,10 @@
   "id": "disable-sculk-catalyst",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Disable Sculk Catalyst",
+  "description": "This mod adds the Gamerule disableSculkCatalyst, which disables the sculk spreading behavior of a sculk catalyst when you kill a mob near one.",
   "authors": [
-    "Me!"
+    "ktraw2"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
