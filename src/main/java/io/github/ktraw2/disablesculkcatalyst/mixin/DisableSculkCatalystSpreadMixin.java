@@ -40,7 +40,12 @@ public abstract class DisableSculkCatalystSpreadMixin extends BlockEntity implem
 			final Vec3d emitterPos,
 			final CallbackInfoReturnable<Boolean> callbackInfo
 	) {
-		if (!world.getGameRules().getBoolean(DisableSculkCatalyst.DISABLE_SCULK_CATALYST)) {
+		final boolean gameruleEnabled = DisableSculkCatalyst.CONFIG.enableGamerule();
+		if (gameruleEnabled &&
+				!world.getGameRules().getBoolean(DisableSculkCatalyst.DISABLE_SCULK_CATALYST)) {
+			return;
+		}
+		else if (!gameruleEnabled && !DisableSculkCatalyst.CONFIG.defaultSetting()) {
 			return;
 		}
 
