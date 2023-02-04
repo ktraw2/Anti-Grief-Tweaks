@@ -1,0 +1,8 @@
+{
+  "gamerule.disableSculkCatalyst": "Disable sculk spreading from sculk catalyst",
+
+  "text.config.anti-grief-tweaks.title": "Anti-Grief Tweaks",
+  "text.config.anti-grief-tweaks.category.disableSculkCatalyst": "Disable Sculk Catalyst",
+  "text.config.anti-grief-tweaks.option.disableSculkCatalyst.enableGamerule": "Enable Gamerule",
+  "text.config.anti-grief-tweaks.option.disableSculkCatalyst.defaultSetting": "Default Setting"
+}

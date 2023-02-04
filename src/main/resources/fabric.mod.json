@@ -1,29 +1,28 @@
 {
   "schemaVersion": 1,
-  "id": "disable-sculk-catalyst",
+  "id": "anti-grief-tweaks",
   "version": "${version}",
 
-  "name": "Disable Sculk Catalyst",
-  "description": "This mod adds the Gamerule disableSculkCatalyst, which disables the sculk spreading behavior of a sculk catalyst when you kill a mob near one.",
+  "name": "Anti-Grief Tweaks",
+  "description": "This mod adds the Gamerule disableSculkCatalyst, which disables the sculk spreading behavior of a sculk catalyst when you kill a mob near one. This mod also adds the ability to disable TNT from working in a list of dimensions which is configurable.",
   "authors": [
     "ktraw2"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/ktraw2/anti-grief-tweaks"
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/disable-sculk-catalyst/icon.png",
+  "icon": "assets/anti-grief-tweaks/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.ktraw2.disablesculkcatalyst.DisableSculkCatalyst"
+      "io.github.ktraw2.antigrieftweaks.AntiGriefTweaks"
     ]
   },
   "mixins": [
-    "disable-sculk-catalyst.mixins.json"
+    "anti-grief-tweaks.mixins.json"
   ],
 
   "depends": {

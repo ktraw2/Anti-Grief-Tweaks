@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.ktraw2.antigrieftweaks.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "DisableSculkCatalystSpreadMixin",
+    "EntityAccessorMixin",
+    "DisableTNTMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

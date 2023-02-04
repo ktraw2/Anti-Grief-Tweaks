@@ -1,6 +1,6 @@
-package io.github.ktraw2.disablesculkcatalyst.mixin;
+package io.github.ktraw2.antigrieftweaks.mixin;
 
-import io.github.ktraw2.disablesculkcatalyst.DisableSculkCatalyst;
+import io.github.ktraw2.antigrieftweaks.AntiGriefTweaks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SculkCatalystBlock;
 import net.minecraft.block.entity.BlockEntity;
@@ -40,12 +40,12 @@ public abstract class DisableSculkCatalystSpreadMixin extends BlockEntity implem
 			final Vec3d emitterPos,
 			final CallbackInfoReturnable<Boolean> callbackInfo
 	) {
-		final boolean gameruleEnabled = DisableSculkCatalyst.CONFIG.enableGamerule();
+		final boolean gameruleEnabled = AntiGriefTweaks.CONFIG.disableSculkCatalyst.enableGamerule();
 		if (gameruleEnabled &&
-				!world.getGameRules().getBoolean(DisableSculkCatalyst.DISABLE_SCULK_CATALYST)) {
+				!world.getGameRules().getBoolean(AntiGriefTweaks.DISABLE_SCULK_CATALYST)) {
 			return;
 		}
-		else if (!gameruleEnabled && !DisableSculkCatalyst.CONFIG.defaultSetting()) {
+		else if (!gameruleEnabled && !AntiGriefTweaks.CONFIG.disableSculkCatalyst.defaultSetting()) {
 			return;
 		}
 
