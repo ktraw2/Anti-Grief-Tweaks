@@ -1,12 +1,14 @@
 package io.github.ktraw2.antigrieftweaks;
 
+import io.github.ktraw2.antigrieftweaks.command.AntiGriefTweaksCommand;
+import io.github.ktraw2.antigrieftweaks.config.ModConfig;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.minecraft.world.GameRules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import io.github.ktraw2.antigrieftweaks.config.ModConfig;
 
 public class AntiGriefTweaks implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("disable-sculk-catalyst");
@@ -18,5 +20,7 @@ public class AntiGriefTweaks implements ModInitializer {
 					: null;
 
 	@Override
-	public void onInitialize() {}
+	public void onInitialize() {
+		CommandRegistrationCallback.EVENT.register(AntiGriefTweaksCommand::register);
+	}
 }

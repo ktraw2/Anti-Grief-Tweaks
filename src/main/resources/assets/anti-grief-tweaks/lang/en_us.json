@@ -1,4 +1,13 @@
 {
+  "command.anti-grief-tweaks.disableTNTDimensions.add.configContainsDimension": "TNT is already disabled in the dimension: %s",
+  "command.anti-grief-tweaks.disableTNTDimensions.add.success": "TNT is now disabled in the dimension: %s",
+
+  "command.anti-grief-tweaks.disableTNTDimensions.remove.configNotContainsDimension": "TNT is already enabled in the dimension: %s",
+  "command.anti-grief-tweaks.disableTNTDimensions.remove.success": "TNT is now enabled in the dimension: %s",
+
+  "command.anti-grief-tweaks.displayConfigValue": "Config %s is currently set to: %s",
+  "command.anti-grief-tweaks.setConfigValue": "Config %s is now set to: %s",
+
   "gamerule.disableSculkCatalyst": "Disable sculk spreading from sculk catalyst",
 
   "text.config.anti-grief-tweaks.title": "Anti-Grief Tweaks",
