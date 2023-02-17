@@ -1,5 +1,6 @@
 package io.github.ktraw2.antigrieftweaks.command;
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
@@ -7,13 +8,13 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.ktraw2.antigrieftweaks.AntiGriefTweaks;
 import io.github.ktraw2.antigrieftweaks.util.ConfigDimensionMatcher;
+import io.github.ktraw2.antigrieftweaks.util.TranslationHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.RegistryEntryArgumentType;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
 import net.minecraft.world.dimension.DimensionType;
 
 import java.util.Arrays;
@@ -22,6 +23,9 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class AntiGriefTweaksCommand {
+    private static final String ARG_DIMENSION = "dimension";
+    private static final String ARG_VALUE = "value";
+
     public static void register(
             final CommandDispatcher<ServerCommandSource> dispatcher,
             final CommandRegistryAccess registryAccess,
@@ -34,16 +38,10 @@ public class AntiGriefTweaksCommand {
                                 CommandManager.literal("disableTNTDimensions")
                                         .executes(context -> displayConfigValue(context, "disableTNTDimensions", Arrays.toString(AntiGriefTweaks.CONFIG.disableTNTDimensions())))
                                         .then(
-                                                CommandManager.literal("add")
-                                                        .then(dimensionArgument(registryAccess)
-                                                                .executes(AntiGriefTweaksCommand::addDisabledTNTDimension)
-                                                        )
+                                                dimensionArrayMutation("add", AntiGriefTweaksCommand::addDisabledTNTDimension, registryAccess)
                                         )
                                         .then(
-                                                CommandManager.literal("remove")
-                                                        .then(dimensionArgument(registryAccess)
-                                                                .executes(AntiGriefTweaksCommand::removeDisabledTNTDimension)
-                                                        )
+                                                dimensionArrayMutation("remove", AntiGriefTweaksCommand::removeDisabledTNTDimension, registryAccess)
                                         )
                         )
                         .then(
@@ -59,8 +57,16 @@ public class AntiGriefTweaksCommand {
     }
 
 
-    private static ArgumentBuilder<ServerCommandSource, ?> dimensionArgument(final CommandRegistryAccess registryAccess) {
-        return CommandManager.argument("dimension", RegistryEntryArgumentType.registryEntry(registryAccess, RegistryKeys.DIMENSION_TYPE));
+    private static ArgumentBuilder<ServerCommandSource, ?> dimensionArrayMutation(
+            final String name,
+            final Command<ServerCommandSource> command,
+            final CommandRegistryAccess registryAccess
+    ) {
+        return CommandManager.literal(name)
+                        .then(
+                                CommandManager.argument(ARG_DIMENSION, RegistryEntryArgumentType.registryEntry(registryAccess, RegistryKeys.DIMENSION_TYPE))
+                                        .executes(command)
+                        );
     }
 
     private static ArgumentBuilder<ServerCommandSource, ?> disableSculkCatalystSubConfig(
@@ -72,11 +78,11 @@ public class AntiGriefTweaksCommand {
         return CommandManager.literal(configName)
                 .executes(context -> displayConfigValue(context, qualifiedName, String.valueOf(getter.get())))
                 .then(
-                        CommandManager.argument("value", BoolArgumentType.bool())
+                        CommandManager.argument(ARG_VALUE, BoolArgumentType.bool())
                                 .executes(context -> {
-                                    final boolean arg = BoolArgumentType.getBool(context, "value");
+                                    final boolean arg = BoolArgumentType.getBool(context, ARG_VALUE);
                                     setter.accept(arg);
-                                    context.getSource().sendMessage(Text.translatable("command.anti-grief-tweaks.setConfigValue", qualifiedName, arg));
+                                    context.getSource().sendMessage(TranslationHelper.getTranslatedText("command.anti-grief-tweaks.setConfigValue", qualifiedName, arg));
                                     return 1;
                                 })
                 );
@@ -87,7 +93,7 @@ public class AntiGriefTweaksCommand {
             String name,
             String value
     ) {
-        context.getSource().sendMessage(Text.translatable("command.anti-grief-tweaks.displayConfigValue", name, value));
+        context.getSource().sendMessage(TranslationHelper.getTranslatedText("command.anti-grief-tweaks.displayConfigValue", name, value));
         return 1;
     }
 
@@ -95,7 +101,7 @@ public class AntiGriefTweaksCommand {
         final RegistryEntry.Reference<DimensionType> arg = RegistryEntryArgumentType.getRegistryEntry(context, "dimension", RegistryKeys.DIMENSION_TYPE);
         final String dimensionKey = arg.registryKey().getValue().toString();
         if (ConfigDimensionMatcher.configContainsDimension(arg)) {
-            context.getSource().sendMessage(Text.translatable("command.anti-grief-tweaks.disableTNTDimensions.add.configContainsDimension", dimensionKey));
+            context.getSource().sendMessage(TranslationHelper.getTranslatedText("command.anti-grief-tweaks.disableTNTDimensions.add.configContainsDimension", dimensionKey));
             return 1;
         }
 
@@ -106,16 +112,16 @@ public class AntiGriefTweaksCommand {
 
         AntiGriefTweaks.CONFIG.disableTNTDimensions(newArray);
 
-        context.getSource().sendMessage(Text.translatable("command.anti-grief-tweaks.disableTNTDimensions.add.success", dimensionKey));
+        context.getSource().sendMessage(TranslationHelper.getTranslatedText("command.anti-grief-tweaks.disableTNTDimensions.add.success", dimensionKey));
 
         return 1;
     }
 
     private static int removeDisabledTNTDimension(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        final RegistryEntry.Reference<DimensionType> arg = RegistryEntryArgumentType.getRegistryEntry(context, "dimension", RegistryKeys.DIMENSION_TYPE);
+        final RegistryEntry.Reference<DimensionType> arg = RegistryEntryArgumentType.getRegistryEntry(context, ARG_DIMENSION, RegistryKeys.DIMENSION_TYPE);
         final String dimensionKey = arg.registryKey().getValue().toString();
         if (!ConfigDimensionMatcher.configContainsDimension(arg)) {
-            context.getSource().sendMessage(Text.translatable("command.anti-grief-tweaks.disableTNTDimensions.remove.configNotContainsDimension", dimensionKey));
+            context.getSource().sendMessage(TranslationHelper.getTranslatedText("command.anti-grief-tweaks.disableTNTDimensions.remove.configNotContainsDimension", dimensionKey));
             return 1;
         }
 
@@ -132,7 +138,7 @@ public class AntiGriefTweaksCommand {
 
         AntiGriefTweaks.CONFIG.disableTNTDimensions(newArray);
 
-        context.getSource().sendMessage(Text.translatable("command.anti-grief-tweaks.disableTNTDimensions.remove.success", dimensionKey));
+        context.getSource().sendMessage(TranslationHelper.getTranslatedText("command.anti-grief-tweaks.disableTNTDimensions.remove.success", dimensionKey));
 
         return 1;
     }
